@@ -33,6 +33,7 @@ data QueryArg
 QueryArg :: Arg -> ArgType -> QueryArg
 _argName :: QueryArg -> Arg
 _argType :: QueryArg -> ArgType
+type HeaderArg = String
 data Url
 Url :: Path -> [QueryArg] -> Url
 _path :: Url -> Path
@@ -41,9 +42,10 @@ defUrl :: Url
 type FunctionName = String
 type Method = String
 data AjaxReq
-AjaxReq :: Url -> Method -> Bool -> FunctionName -> AjaxReq
+AjaxReq :: Url -> Method -> [HeaderArg] -> Bool -> FunctionName -> AjaxReq
 _reqUrl :: AjaxReq -> Url
 _reqMethod :: AjaxReq -> Method
+_reqHeaders :: AjaxReq -> [HeaderArg]
 _reqBody :: AjaxReq -> Bool
 _funcName :: AjaxReq -> FunctionName
 argType :: Lens' QueryArg ArgType
@@ -52,6 +54,7 @@ queryStr :: Lens' Url [QueryArg]
 path :: Lens' Url Path
 reqUrl :: Lens' AjaxReq Url
 reqMethod :: Lens' AjaxReq Method
+reqHeaders :: Lens' AjaxReq [HeaderArg]
 reqBody :: Lens' AjaxReq Bool
 funcName :: Lens' AjaxReq FunctionName
 jsParams :: [QueryArg] -> String
