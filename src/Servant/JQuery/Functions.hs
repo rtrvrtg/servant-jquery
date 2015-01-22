@@ -45,7 +45,7 @@ hoistedF
 hoistedF fname margs middle = "\n"
     <> "function " <> fname
     <> "(" <> margs <> "){" <> "\n"
-    <> middle <> "}"
+    <> middle <> "}" <> "\n"
 
 -- | Render a non-hoisted function
 nonHoistedF
@@ -57,8 +57,8 @@ nonHoistedF
     -> String -- ^ Rendered JS non-hoisted function
 nonHoistedF mname fname margs middle = "\n"
     <> prefix <> fname <> " = function ("
-    <> margs <> "}{" <> "\n"
-    <> middle <> "};"
+    <> margs <> "){" <> "\n"
+    <> middle <> "};" <> "\n"
   where
     prefix = case mname of
         Just mn -> mn <> "."
@@ -72,7 +72,7 @@ anonF
     -> String -- ^ Rendered JS anonymous function
 anonF margs willReturn middle = "\n"
     <> returnOrNot
-    <> "function(" <> margs
+    <> "function (" <> margs
     <> "){" <> "\n"
     <> middle
     <> returnTrail <> "\n"

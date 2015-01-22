@@ -15,6 +15,7 @@ import Test.Hspec
 import Servant.API
 import Servant.JQuery
 import Servant.JQuerySpec.CustomHeaders
+import Servant.JQuerySpec.FunctionRender
 
 type TestAPI = [sitemap|
 POST    /simple                  String -> Bool
@@ -49,8 +50,9 @@ customHeaderProxy2 :: Proxy CustomHeaderAPI2
 customHeaderProxy2 = Proxy
 
 spec :: Spec
-spec = describe "Servant.JQuery"
-    generateJSSpec
+spec = do
+    describe "Servant.JQuery" generateJSSpec
+    describe "Servant.JQuery" renderFunctionJSSpec
 
 generateJSSpec :: Spec
 generateJSSpec = describe "generateJS" $ do

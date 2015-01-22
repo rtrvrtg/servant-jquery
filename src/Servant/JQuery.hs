@@ -12,10 +12,12 @@
 module Servant.JQuery
   ( jquery
   , generateJS
+  , generateJS'
   , printJS
   , module Servant.JQuery.Internal
-  , Settings
-  , FunctionFormat
+  , Settings(..)
+  , FunctionFormat(..)
+  , defaultSettings
   ) where
 
 import Control.Lens
