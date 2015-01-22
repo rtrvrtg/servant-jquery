@@ -51,7 +51,7 @@ generateJS' settings req = renderFunctionWrap (_functionFormat settings)
         args = captures
             ++ map (view argName) queryparams
             ++ body
-            ++ map ("header"++) hs
+            ++ map (toValidFunctionName . (<>) "header" . headerArgName) hs
             ++ ["onSuccess", "onError"]
         
         captures = map captureArg
@@ -74,10 +74,12 @@ generateJS' settings req = renderFunctionWrap (_functionFormat settings)
         reqheaders =
           if null hs
             then ""
-            else "\n    , headers: { " ++ headersStr ++ " } }\n"
+            else "\n    , headers: { " ++ headersStr ++ " }\n"
 
           where headersStr = intercalate ", " $ map headerStr hs
-                headerStr hname = "\"" ++ hname ++ "\": header" ++ hname
+                headerStr header = "\"" ++
+                  headerArgName header ++
+                  "\": " ++ show header
 
         fname = req ^. funcName
         method = req ^. reqMethod
