@@ -49,7 +49,6 @@ generateJS' settings req = renderFunctionWrap (_functionFormat settings)
              <> "    , type: '" <> method <> "'\n"
              <> "    });\n"
 
-        argsStr = intercalate ", " args
         args = captures
             ++ map (view argName) queryparams
             ++ body
