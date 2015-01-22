@@ -14,33 +14,40 @@ module Servant.JQuery
   , generateJS
   , printJS
   , module Servant.JQuery.Internal
+  , Settings
+  , FunctionFormat
   ) where
 
 import Control.Lens
 import Data.List
 import Data.Monoid
 import Data.Proxy
+import Servant.JQuery.Functions
 import Servant.JQuery.Internal
+import Servant.JQuery.Types
 
 jquery :: HasJQ layout => Proxy layout -> JQ layout
 jquery p = jqueryFor p defReq
 
--- js codegen
+-- JS codegen with default settings
 generateJS :: AjaxReq -> String
-generateJS req = "\n" <>
-    "function " <> fname <> "(" <> argsStr <> ")\n"
- <> "{\n"
- <> "  $.ajax(\n"
- <> "    { url: " <> url <> "\n"
- <> "    , success: onSuccess\n"
- <> dataBody
- <> reqheaders
- <> "    , error: onError\n"
- <> "    , type: '" <> method <> "'\n"
- <> "    });\n"
- <> "}\n"
+generateJS = generateJS' defaultSettings
 
-  where argsStr = intercalate ", " args
+-- JS codegen with custom settings
+generateJS' :: Settings -> AjaxReq -> String
+generateJS' settings req = renderFunctionWrap (_functionFormat settings)
+                                              fname args inner
+  where 
+        inner = "  $.ajax(\n"
+             <> "    { url: " <> url <> "\n"
+             <> "    , success: onSuccess\n"
+             <> dataBody
+             <> reqheaders
+             <> "    , error: onError\n"
+             <> "    , type: '" <> method <> "'\n"
+             <> "    });\n"
+
+        argsStr = intercalate ", " args
         args = captures
             ++ map (view argName) queryparams
             ++ body
