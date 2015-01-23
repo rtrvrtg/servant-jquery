@@ -12,7 +12,7 @@
 module Servant.JQuery
   ( jquery
   , generateJS
-  , generateJS'
+  , generateJSWith
   , printJS
   , module Servant.JQuery.Internal
   , Settings(..)
@@ -31,13 +31,18 @@ import Servant.JQuery.Types
 jquery :: HasJQ layout => Proxy layout -> JQ layout
 jquery p = jqueryFor p defReq
 
--- JS codegen with default settings
-generateJS :: AjaxReq -> String
-generateJS = generateJS' defaultSettings
+-- | JS code generation with default settings
+generateJS
+    :: AjaxReq -- ^ AJAX request definition
+    -> String  -- ^ Rendered Javascript
+generateJS = generateJSWith defaultSettings
 
--- JS codegen with custom settings
-generateJS' :: Settings -> AjaxReq -> String
-generateJS' settings req = renderFunctionWrap (_functionFormat settings)
+-- | JS code generation with custom settings
+generateJSWith
+    :: Settings -- ^ Servant.JQuery Settings
+    -> AjaxReq -- ^ AJAX request
+    -> String  -- ^ Rendered Javascript
+generateJSWith settings req = renderFunctionWrap (_functionFormat settings)
                                               fname args inner
   where 
         inner = "  $.ajax(\n"
