@@ -6,7 +6,7 @@ import Data.List
 import Data.Monoid
 import Servant.JQuery.Types
 
--- | Renders a JS function wrapper
+-- | Renders a Javascript function wrapper
 renderFunctionWrap
     :: FunctionFormat -- ^ Format of function
     -> String -- ^ Function name

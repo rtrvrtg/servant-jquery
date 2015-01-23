@@ -83,10 +83,16 @@ instance Show HeaderArg where
             T.pack
 
 -- | Attempts to reduce the function name provided to that allowed by JS.
--- https://mathiasbynens.be/notes/javascript-identifiers
--- Couldn't work out how to handle zero-width characters.
+--
+-- See <https://mathiasbynens.be/notes/javascript-identifiers> for more
+-- information on function name encoding.
+--
+-- Note that in this method, we don't currently handle zero-width characters.
+--
 -- @TODO: specify better default function name, or throw error?
-toValidFunctionName :: String -> String
+toValidFunctionName
+  :: String -- ^ Function name to sanitise
+  -> String -- ^ Sanitised function name
 toValidFunctionName (x:xs) = [setFirstChar x] <> filter remainder xs
   where
     setFirstChar c = if firstChar c
