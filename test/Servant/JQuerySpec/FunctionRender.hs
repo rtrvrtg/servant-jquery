@@ -28,49 +28,42 @@ renderFunctionJSSpec :: Spec
 renderFunctionJSSpec = describe "JS function rendering" $ do
     it "should generate valid javascript with default settings" $ do
         let out = generateJS' defaultSettings $ jquery bookAPIProxy
-        print out
         ("\nfunction getbooks(isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("}\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid javascript hoisted function" $ do
         let out = generateJS' (Settings Hoisted "") $ jquery bookAPIProxy
-        print out
         ("\nfunction getbooks(isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("}\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid javascript non-hoisted function" $ do
         let out = generateJS' (Settings NonHoisted "") $ jquery bookAPIProxy
-        print out
         ("\nvar getbooks = function (isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("};\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid javascript module function" $ do
         let out = generateJS' (Settings (Module "Foo.Bar") "") $ jquery bookAPIProxy
-        print out
         ("\nFoo.Bar.getbooks = function (isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("};\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid anonymous function" $ do
         let out = generateJS' (Settings (Anonymous False) "") $ jquery bookAPIProxy
-        print out
         ("\nfunction (isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("}\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid anonymous function variable" $ do
         let out = generateJS' (Settings (Anonymous True) "") $ jquery bookAPIProxy
-        print out
         ("\nreturn function (isbn,onSuccess,onError){" `isPrefixOf` out) `shouldBe` True
         ("};\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
 
     it "should generate valid purescript-friendly function" $ do
         let out = generateJS' (Settings PurescriptFriendly "") $ jquery bookAPIProxy
-        print out
         ("\nfunction getbooks(isbn,onSuccess,onError){\n\nreturn function (){\n" `isPrefixOf` out) `shouldBe` True
         ("};\n}\n" `isSuffixOf` out) `shouldBe` True
         parseFromString out `shouldSatisfy` isRight
